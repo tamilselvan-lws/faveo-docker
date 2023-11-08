@@ -1,8 +1,8 @@
 version: '3'
 services:
-  faveo-apache:
+  faveo-nginx:
     image: tamilselvanlws/ubuntu-nginx-php8.1:v1
-    container_name: ${DOMAINNAME}-apache
+    container_name: ${DOMAINNAME}-nginx
     networks:
       faveo-network:
         ipv4_address: 172.24.2.1
@@ -50,7 +50,7 @@ services:
     ports:
         - "9001:9001"
     depends_on:
-      - faveo-apache
+      - faveo-nginx
       - faveo-mariadb
       - faveo-redis
     networks:
