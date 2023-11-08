@@ -299,7 +299,8 @@ fi
 
 # Docker up
 if [[ $? -eq 0 ]]; then
-    docker-compose -f docker-compose-apache.yml up -d
+    cp docker-compose-apache.yml docker-compose.yml
+    docker-compose up -d
 fi
 
 

@@ -6,10 +6,11 @@
 
 A pretty simplified Docker Compose workflow that sets up a network of containers for Faveo Helpdesk.
 
-All the Faveo Helpdesk editions are supported except the community edition.
 
 ## <b>Usage</b>
-___
+
+- Apache Server 
+- Nginx Server
 
 To get started, make sure you have Docker and Docker-Compose installed on your system, and then clone the below Git-Hub repository with the below link.
 
@@ -54,13 +55,6 @@ Visit https://yourdomainname complete the readiness probe, input the Database De
 
 There is one final step that needs to be done to complete the installation. You have to edit the .env file which is generated under the Faveo root directory after completing the installation in the browser. Open the terminal and navigate to the faveo-docker directory here you will find the directory "faveo" which is downloaded while running the script this directory contains all the Helpdesk codebase, inside it, you need to edit the ".env" file and add REDIS_HOST=faveo-redis. The "faveo-redis" is the DNS name of the Redis container. Finally, run the below command for changes to take effect.
 
-#### Apache
 ```sh
-docker-compose -f docker-compose-apache.yml down && docker-compose -f docker-compose-apache.yml up -d
+docker compose down && docker compose up -d
 ```
-  
-#### NGINX
-```sh
-docker-compose -f docker-compose-nginx.yml down && docker-compose -f docker-compose-nginx.yml up -d
-```
-
