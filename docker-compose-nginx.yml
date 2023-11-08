@@ -1,0 +1,69 @@
+version: '3'
+services:
+  faveo-apache:
+    image: tamilselvanlws/ubuntu-nginx-php8.1:v1
+    container_name: ${DOMAINNAME}-apache
+    networks:
+      faveo-network:
+        ipv4_address: 172.24.2.1
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default:/etc/nginx/sites-available/default
+      - ./${HOST_ROOT_DIR}:/var/www/html
+      - ${CUR_DIR}/certbot/letsencrypt/etc/letsencrypt/live/${DOMAINNAME}/cert.pem:/var/imported/ssl/cert.pem
+      - ${CUR_DIR}/certbot/letsencrypt/etc/letsencrypt/live/${DOMAINNAME}/privkey.pem:/var/imported/ssl/privkey.pem
+      - ${CUR_DIR}/certbot/letsencrypt/etc/letsencrypt/live/${DOMAINNAME}/fullchain.pem:/var/imported/ssl/fullchain.pem
+    restart: always
+    
+  faveo-mariadb:
+    image: mariadb:10.6
+    container_name: ${DOMAINNAME}-mariadb
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - db-volume:/var/lib/mysql
+    networks:
+      faveo-network:
+        ipv4_address: 172.24.2.2
+    restart: on-failure
+
+  faveo-redis:
+    image: redis
+    container_name: ${DOMAINNAME}-redis
+    ports:
+      - "6379:6379"
+    networks:
+      faveo-network:
+        ipv4_address: 172.24.2.3
+    restart: always
+
+  faveo-supervisor:
+    image: tamilselvanlws/ubuntu-supervisor:v1.1
+    container_name: ${DOMAINNAME}-supervisor
+    volumes:
+      - ./${HOST_ROOT_DIR}/:/var/www/html/
+    ports:
+        - "9001:9001"
+    depends_on:
+      - faveo-apache
+      - faveo-mariadb
+      - faveo-redis
+    networks:
+      faveo-network:
+        ipv4_address: 172.24.2.4
+    restart: on-failure
+
+volumes:
+  db-volume:
+    external: 
+      name: ${DOMAINNAME}-faveoDB
+  
+networks:
+    faveo-network:
+      external:
+        name: ${DOMAINNAME}-faveo
