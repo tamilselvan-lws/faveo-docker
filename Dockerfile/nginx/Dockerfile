@@ -23,6 +23,7 @@ RUN sed -i -e 's/^file_uploads = .*/file_uploads = On/' \
            -e 's/^max_execution_time = .*/max_execution_time = 360/' /etc/php/8.1/fpm/php.ini
 RUN apt-get clean
 WORKDIR /var/www/html
+RUN service php8.1-fpm restart && service nginx restart
 
 # Expose ports 80 and 443 for HTTP and HTTPS traffic
 EXPOSE 80

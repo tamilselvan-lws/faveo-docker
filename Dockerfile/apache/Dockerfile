@@ -22,9 +22,12 @@ RUN sed -i -e 's/^file_uploads = .*/file_uploads = On/' \
            -e 's/^cgi.fix_pathinfo = .*/cgi.fix_pathinfo = 0/' \
            -e 's/^upload_max_filesize = .*/upload_max_filesize = 100M/' \
            -e 's/^post_max_size = .*/post_max_size = 100M/' \
-           -e 's/^max_execution_time = .*/max_execution_time = 360/' /etc/php/8.1/apache2/php.ini
+           -e 's/^max_execution_time = .*/max_execution_time = 360/' /etc/php/8.1/fpm/php.ini
 
 WORKDIR /var/www/html
+RUN a2enmod proxy_fcgi setenvif
+RUN a2enconf php8.1-fpm
+RUN service php8.1-fpm restart && service apache2 restart
 RUN a2enmod rewrite
 RUN a2enmod ssl
 
@@ -32,4 +35,4 @@ RUN a2enmod ssl
 EXPOSE 80
 EXPOSE 443
 
-CMD ["/bin/sh", "-c", "apache2ctl -D FOREGROUND"]
+CMD /bin/sh -c "service php8.1-fpm start && apache2ctl -D FOREGROUND"
