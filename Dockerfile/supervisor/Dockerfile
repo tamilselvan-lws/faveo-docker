@@ -1,5 +1,5 @@
 # Use the official Ubuntu base image
-FROM ubuntu:jammy-20230816
+FROM ubuntu:jammy-20231004
 ENV TZ=Asia/Kolkata DEBIAN_FRONTEND=noninteractive
 
 # Install Supervisor and update the package index
