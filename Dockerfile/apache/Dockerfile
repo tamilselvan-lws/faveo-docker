@@ -15,14 +15,15 @@ RUN sed -i '2 a zend_extension = "/usr/lib/php/20210902/ioncube_loader_lin_8.1.s
 RUN sed -i '2 a zend_extension = "/usr/lib/php/20210902/ioncube_loader_lin_8.1.so"' /etc/php/8.1/fpm/php.ini
 RUN apt update && apt-get -y install wkhtmltopdf
 RUN apt-get clean
-RUN sed -i -e 's/^file_uploads = .*/file_uploads = On/' \
-           -e 's/^allow_url_fopen = .*/allow_url_fopen = On/' \
-           -e 's/^short_open_tag = .*/short_open_tag = On/' \
-           -e 's/^memory_limit = .*/memory_limit = 256M/' \
-           -e 's/^cgi.fix_pathinfo = .*/cgi.fix_pathinfo = 0/' \
-           -e 's/^upload_max_filesize = .*/upload_max_filesize = 100M/' \
-           -e 's/^post_max_size = .*/post_max_size = 100M/' \
-           -e 's/^max_execution_time = .*/max_execution_time = 360/' /etc/php/8.1/fpm/php.ini
+RUN sed -i -e 's/^file_uploads =.*/file_uploads = On/' \
+           -e 's/^allow_url_fopen =.*/allow_url_fopen = On/' \
+           -e 's/^short_open_tag =.*/short_open_tag = On/' \
+           -e 's/^memory_limit =.*/memory_limit = 256M/' \
+           -e 's/^;cgi.fix_pathinfo=1.*/cgi.fix_pathinfo = 0/' \
+           -e 's/^upload_max_filesize =.*/upload_max_filesize = 100M/' \
+           -e 's/^post_max_size =.*/post_max_size = 100M/' \
+           -e 's/^max_execution_time =.*/max_execution_time = 360/' \
+           /etc/php/8.1/fpm/php.ini
 
 WORKDIR /var/www/html
 RUN a2enmod proxy_fcgi setenvif
