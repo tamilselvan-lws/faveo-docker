@@ -5,7 +5,7 @@ services:
     container_name: ${DOMAINNAME}-apache
     networks:
       faveo-network:
-        ipv4_address: 172.22.2.1
+        ipv4_address: 172.28.2.1
     ports:
       - "80:80"
       - "443:443"
@@ -29,7 +29,7 @@ services:
       - db-volume:/var/lib/mysql
     networks:
       faveo-network:
-        ipv4_address: 172.22.2.2
+        ipv4_address: 172.28.2.2
     restart: on-failure
 
   faveo-redis:
@@ -39,7 +39,7 @@ services:
       - "6379:6379"
     networks:
       faveo-network:
-        ipv4_address: 172.22.2.3
+        ipv4_address: 172.28.2.3
     restart: always
 
   faveo-supervisor:
@@ -57,7 +57,7 @@ services:
       - faveo-memcached
     networks:
       faveo-network:
-        ipv4_address: 172.22.2.4
+        ipv4_address: 172.28.2.4
     restart: on-failure
 
   faveo-meilisearch:
@@ -72,7 +72,7 @@ services:
       - MEILI_MASTER_KEY=${MASTER_KEY}
     networks:
       faveo-network:
-        ipv4_address: 172.22.2.5
+        ipv4_address: 172.28.2.5
     restart: always
 
   faveo-memcached:
@@ -82,7 +82,7 @@ services:
       - "11211:11211"
     networks:
       faveo-network:
-        ipv4_address: 172.22.2.6
+        ipv4_address: 172.28.2.6
     restart: always
 
 volumes:
