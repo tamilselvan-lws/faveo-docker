@@ -43,7 +43,7 @@ services:
     restart: always
 
   faveo-supervisor:
-    image: tamilselvanlws/faveo-supervisor-php8.1
+    image: tamilselvanlws/faveo-supervisor-php8.1:v1
     container_name: ${DOMAINNAME}-supervisor
     volumes:
       - ./${HOST_ROOT_DIR}/:/var/www/html/
